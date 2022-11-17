@@ -14,3 +14,12 @@ int multiply(std::vector<int> data)
     }
     return count;
 }
+
+template <typename T>
+void printVector(std::vector<T> data)
+{
+    for (unsigned int i = 0; i < data.size(); i++)
+    {
+        std::cout << data[i] << " ";
+    }
+}
