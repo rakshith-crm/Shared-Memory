@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd test/
-g++ SharedMemoryWrite.cpp -pthread -lrt -o SharedMemoryWrite.out
-g++ SharedMemoryRead.cpp -pthread -lrt -o SharedMemoryRead.out
+c++ SharedMemoryWrite.cpp -pthread -lrt -o SharedMemoryWrite.out
+c++ SharedMemoryRead.cpp -pthread -lrt -o SharedMemoryRead.out

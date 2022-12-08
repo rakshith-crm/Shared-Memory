@@ -30,7 +30,7 @@ void SharedMemory<T>::write(std::vector<T> data, std::vector<int> shape)
         return;
     }
     int dimCount = (int)shape.size();
-    for (unsigned int shapeIndex = 0; shapeIndex < dimCount; shapeIndex++)
+    for (int shapeIndex = 0; shapeIndex < dimCount; shapeIndex++)
     {
         sharedData[shapeIndex] = shape[shapeIndex];
     }
@@ -70,21 +70,23 @@ void SharedMemory<T>::append(std::vector<T> appendData, std::vector<int> appendS
 
     int appendElementCount = multiply(appendShape);
     int currentElementCount = multiply(currentShape);
-    if (appendData.size() != appendElementCount)
+    if ((int)appendData.size() != appendElementCount)
     {
         std::cout << "\ncount(data) != shape()'s info [" << appendData.size() << " != " << appendElementCount << "]" << std::endl;
         return;
     }
-    if (appendDimCount != (dimCount - 1))
+    if (appendDimCount != dimCount)
     {
-        std::cout << "appendData.Shape != currentData.Shape[-1:]" << std::endl;
+        std::cout << "appendDimCount " << appendDimCount << " != currentData.Shape[-1:]"
+                  << " " << dimCount << " " << std::endl;
         return;
     }
     for (int index = 0; index < dimCount; index++)
     {
-        if (index > 0 && appendShape[index - 1] != currentShape[index])
+        if (index > 0 && appendShape[index] != currentShape[index])
         {
-            std::cout << "appendData.Shape != currentData.Shape[-1:]" << std::endl;
+            std::cout << "appendData.Shape != currentData.Shape[-1:]"
+                      << "index: " << index << std::endl;
             return;
         }
     }
@@ -92,7 +94,7 @@ void SharedMemory<T>::append(std::vector<T> appendData, std::vector<int> appendS
     {
         sharedData[dimCount + 1 + currentElementCount + i] = appendData[i];
     }
-    sharedData[0] += 1;
+    sharedData[0] += appendShape[0];
 }
 
 template <typename T>
