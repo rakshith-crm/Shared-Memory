@@ -62,6 +62,25 @@ std::vector<T> SharedMemory<T>::read()
 }
 
 template <typename T>
+py::array_t<T> SharedMemory<T>::readNumpy()
+{
+    std::vector<T> data = this->read();
+    std::vector<int> shape = this->getShape();
+    int count = (int)data.size();
+    auto result = py::array_t<T>(count);
+
+    py::buffer_info buf3 = result.request();
+
+    T *ptr3 = static_cast<T *>(buf3.ptr);
+
+    for (int index = 0; index < count; index++)
+    {
+        ptr3[index] = data[index];
+    }
+    return result.reshape(shape);
+}
+
+template <typename T>
 void SharedMemory<T>::append(std::vector<T> appendData, std::vector<int> appendShape)
 {
     std::vector<int> currentShape = getShape();

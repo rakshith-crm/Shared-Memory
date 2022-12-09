@@ -8,7 +8,14 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+#include <pybind11/numpy.h>
 #include "../utils/utils.cpp"
+
+namespace py = pybind11;
 
 template <typename T>
 class SharedMemory
@@ -22,7 +29,7 @@ public:
     SharedMemory(const char *);
     ~SharedMemory();
     std::vector<T> read();
-    ;
+    py::array_t<T> readNumpy();
     void write(std::vector<T>, std::vector<int>);
     void append(std::vector<T>, std::vector<int>);
     std::vector<int> getShape();
