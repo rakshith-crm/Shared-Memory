@@ -8,14 +8,18 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <semaphore.h>
+#include "../utils/utils.cpp"
+
+#ifndef STANDALONE
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
 #include <pybind11/numpy.h>
-#include "../utils/utils.cpp"
 
 namespace py = pybind11;
+#endif
 
 template <typename T>
 class SharedMemory
@@ -24,13 +28,16 @@ private:
     int shm_fd;
     char *uniqueKey;
     T *sharedData;
+    sem_t mutex;
+    void write(std::vector<T>, std::vector<int>);
 
 public:
     SharedMemory(const char *);
     ~SharedMemory();
     std::vector<T> read();
+#ifndef STANDALONE
     py::array_t<T> readNumpy();
-    void write(std::vector<T>, std::vector<int>);
+#endif
     void append(std::vector<T>, std::vector<int>);
     std::vector<int> getShape();
 };

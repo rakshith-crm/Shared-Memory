@@ -46,6 +46,10 @@ std::vector<T> SharedMemory<T>::read()
     std::vector<T> data;
     std::vector<int> shape = getShape();
     int dimCount = shape.size();
+    if (dimCount == 0)
+    {
+        return std::vector<T>();
+    }
     int elementCount = multiply(shape);
     if (sharedData[0] == 0)
     {
@@ -61,6 +65,7 @@ std::vector<T> SharedMemory<T>::read()
     return data;
 }
 
+#ifndef STANDALONE
 template <typename T>
 py::array_t<T> SharedMemory<T>::readNumpy()
 {
@@ -79,10 +84,18 @@ py::array_t<T> SharedMemory<T>::readNumpy()
     }
     return result.reshape(shape);
 }
+#endif
 
 template <typename T>
 void SharedMemory<T>::append(std::vector<T> appendData, std::vector<int> appendShape)
 {
+    sem_wait(&mutex);
+    if(sharedData[0] == 0)
+    {
+        this->write(appendData, appendShape);
+        sem_post(&mutex);
+        return;
+    }
     std::vector<int> currentShape = getShape();
     int dimCount = currentShape.size();
     int appendDimCount = appendShape.size();
@@ -114,6 +127,7 @@ void SharedMemory<T>::append(std::vector<T> appendData, std::vector<int> appendS
         sharedData[dimCount + 1 + currentElementCount + i] = appendData[i];
     }
     sharedData[0] += appendShape[0];
+    sem_post(&mutex);
 }
 
 template <typename T>
