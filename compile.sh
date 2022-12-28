@@ -1,5 +1,4 @@
 #!/bin/bash
 
-cd test/
-g++ -DSTANDALONE SharedMemoryWrite.cpp -std=c++11 -pthread -o SharedMemoryWrite.out
-g++ -DSTANDALONE SharedMemoryRead.cpp -std=c++11 -pthread -o SharedMemoryRead.out
+g++ -DSTANDALONE test/src/SharedMemoryWrite.cpp -std=c++11 -pthread -o test/binary/SharedMemoryWrite.out
+g++ -DSTANDALONE test/src/SharedMemoryRead.cpp -std=c++11 -pthread -o test/binary/SharedMemoryRead.out

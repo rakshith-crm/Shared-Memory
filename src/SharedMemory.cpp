@@ -5,6 +5,9 @@
 #define SIZE 1048576
 
 template <typename T>
+int SharedMemory<T>::objectCount = 1;
+
+template <typename T>
 SharedMemory<T>::SharedMemory(const char *uniqueKey)
 {
     this->shm_fd = shm_open(uniqueKey, O_CREAT | O_RDWR, 0666);
@@ -55,9 +58,6 @@ std::vector<T> SharedMemory<T>::read()
     {
         return std::vector<T>();
     }
-    std::cout << "Shape: [ ";
-    printVector(shape);
-    std::cout << "]" << std::endl;
     for (int i = 0; i < elementCount; i++)
     {
         data.push_back(sharedData[i + dimCount + 1]);
@@ -90,7 +90,7 @@ template <typename T>
 void SharedMemory<T>::append(std::vector<T> appendData, std::vector<int> appendShape)
 {
     sem_wait(&mutex);
-    if(sharedData[0] == 0)
+    if(sharedData[0] == 0 || sharedData[0] == SHAPE_END)
     {
         this->write(appendData, appendShape);
         sem_post(&mutex);
@@ -141,4 +141,10 @@ std::vector<int> SharedMemory<T>::getShape()
         shape.push_back(value);
     }
     return shape;
+}
+
+template <typename T>
+void SharedMemory<T>::close()
+{
+    std::vector<int> currentShape = getShape();
 }

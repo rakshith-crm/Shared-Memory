@@ -1,5 +1,5 @@
 #!/bin/bash
 
-rm -rf test/*.out
-rm -rf test/*.so
+rm -rf test/binary/*
+rm -rf test/lib/*
 rm -rf build/*

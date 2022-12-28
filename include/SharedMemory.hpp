@@ -25,6 +25,7 @@ template <typename T>
 class SharedMemory
 {
 private:
+    static int objectCount;
     int shm_fd;
     char *uniqueKey;
     T *sharedData;
@@ -40,6 +41,7 @@ public:
 #endif
     void append(std::vector<T>, std::vector<int>);
     std::vector<int> getShape();
+    void close();
 };
 
 #include "../src/SharedMemory.cpp"

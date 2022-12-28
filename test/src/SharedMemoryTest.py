@@ -1,11 +1,13 @@
 import shared
-from multiprocessing import Process
+import numpy as np
+from multiprocessing import Process, shared_memory
 
-shared_list = shared.List('DOG')
-
+shared_list = shared.integerList('CAD')
 
 def function(integer):
-    shared_list.append([integer], [1])
+    for i in range(10):
+        continue
+    # shared_list.append([integer], [1])
 
 if __name__ == '__main__':
     all_processes = []
@@ -18,6 +20,9 @@ if __name__ == '__main__':
     for i in range(len(all_processes)):
         all_processes[i].join()
 
-
+    # expected = np.arange(N)
     values = shared_list.read()
-    print(values)
+    values.sort()
+    print(values, values.shape)
+    # print(expected)
+    shared_list.close()

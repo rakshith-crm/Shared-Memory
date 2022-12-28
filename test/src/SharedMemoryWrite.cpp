@@ -1,4 +1,4 @@
-#include "../include/SharedMemory.hpp"
+#include "../../include/SharedMemory.hpp"
 
 int main()
 {
