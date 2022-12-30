@@ -3,8 +3,8 @@
 
 int main()
 {
-    SharedMemory<double> sharedMemory("DOG");
-    std::vector<double> data = sharedMemory.read();
+    SharedMemory<long double> sharedMemory("DOG");
+    std::vector<long double> data = sharedMemory.read();
 
     for (unsigned int i = 0; i < data.size(); i++)
     {

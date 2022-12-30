@@ -4,7 +4,8 @@ project(example LANGUAGES CXX)
 find_package(pybind11 REQUIRED)  # or add_subdirectory(pybind11)
 
 add_library(shared MODULE shared.cpp)
-
+target_compile_options(shared PRIVATE -lrt)
+target_link_libraries(shared PRIVATE -lrt)
 target_link_libraries(shared PRIVATE pybind11::module pybind11::lto pybind11::windows_extras)
 
 pybind11_extension(shared)

@@ -1,7 +1,7 @@
 #pragma once
 #include "../include/SharedMemory.hpp"
 
-#define SHAPE_END -INT32_MAX
+#define SHAPE_END 0
 #define SIZE 1048576
 
 template <typename T>
@@ -14,6 +14,7 @@ SharedMemory<T>::SharedMemory(const char *uniqueKey)
     this->uniqueKey = (char *)uniqueKey;
     ftruncate(shm_fd, SIZE * sizeof(T));
     sharedData = (T *)mmap(0, SIZE * sizeof(T), PROT_WRITE, MAP_SHARED, shm_fd, 0);
+    sem_init(&mutex, 1, 1);
 }
 
 template <typename T>
@@ -70,6 +71,10 @@ template <typename T>
 py::array_t<T> SharedMemory<T>::readNumpy()
 {
     std::vector<T> data = this->read();
+    if(data.size() == 0)
+    {
+        return py::array_t<T>();
+    }
     std::vector<int> shape = this->getShape();
     int count = (int)data.size();
     auto result = py::array_t<T>(count);
@@ -82,7 +87,8 @@ py::array_t<T> SharedMemory<T>::readNumpy()
     {
         ptr3[index] = data[index];
     }
-    return result.reshape(shape);
+    result.resize(shape);
+    return result;
 }
 #endif
 
@@ -146,5 +152,5 @@ std::vector<int> SharedMemory<T>::getShape()
 template <typename T>
 void SharedMemory<T>::close()
 {
-    std::vector<int> currentShape = getShape();
+    sharedData[0] = 0;
 }

@@ -11,10 +11,10 @@ def function(integer):
 
 if __name__ == '__main__':
     all_processes = []
-    for i in range(100):
+    for i in range(5):
         process = Process(target=function, args=(i,))
         all_processes.append(process)
-
+    
     for i in range(len(all_processes)):
         all_processes[i].start()
     for i in range(len(all_processes)):

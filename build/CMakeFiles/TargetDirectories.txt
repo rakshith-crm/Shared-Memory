@@ -1,0 +1,3 @@
+/home/csuser/19pt20/Shared-Memory/build/CMakeFiles/rebuild_cache.dir
+/home/csuser/19pt20/Shared-Memory/build/CMakeFiles/edit_cache.dir
+/home/csuser/19pt20/Shared-Memory/build/CMakeFiles/shared.dir

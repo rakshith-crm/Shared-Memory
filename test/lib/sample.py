@@ -1,0 +1,13 @@
+import shared
+lst = shared.doubleList('DOG')
+print(lst.read())
+clst = shared.charList('ABC')
+clst.append(['a', 'b', 'c'], [3])
+clst.append(['a', 'b', 'c'], [3])
+print(clst.read())
+mlst = shared.doubleList('CAT')
+mlst.append([1,2,3], [1, 3])
+mlst.append([1,2,3], [1, 3])
+print()
+print(mlst.read())
+print(mlst.read().shape)

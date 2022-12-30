@@ -20,6 +20,7 @@ PYBIND11_MODULE(shared, m)
     m.doc() = "pybp module";
     addClassType<long double>(m, "double");
     addClassType<long int>(m, "integer");
-    addClassType<float>(m, "float");
+    addClassType<char>(m, "char");
+    
     
 }

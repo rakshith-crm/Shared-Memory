@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -flto -shared  -o shared.cpython-39-x86_64-linux-gnu.so CMakeFiles/shared.dir/shared.cpp.o  -lrt 
